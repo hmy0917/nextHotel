@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8765
   tomcat:
     accesslog:
       enabled: true
@@ -9,13 +9,12 @@ server:
 endpoints:
   enabled: true
 
-apollo:
-  bootstrap:
-    enabled: true
-    namespaces: INFRA.dubbo,INFRA.codis,INFRA.mongodb.kit
 
 codis:
   enables: cache_training
 
 logging:
   config: classpath:log4j2-${APP_ENV:dev}.xml
+
+spring.data.mongodb.uri:
+  mongodb://localhost:27017/nexthotel
