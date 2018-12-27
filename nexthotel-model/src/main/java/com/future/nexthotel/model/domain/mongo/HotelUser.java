@@ -25,6 +25,6 @@ public class HotelUser {
     private String id;
     private String userName;
     private String userPassword;
-
+    private String createAt;
 
 }

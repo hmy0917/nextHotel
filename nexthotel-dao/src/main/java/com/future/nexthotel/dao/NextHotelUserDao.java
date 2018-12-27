@@ -1,6 +1,7 @@
 package com.future.nexthotel.dao;
 
 import com.future.nexthotel.model.domain.mongo.HotelUser;
+import com.future.nexthotel.model.query.UserQuery;
 
 /**
  * @author HaoMingYao (haomingyao@gotokeep.com)
@@ -12,5 +13,5 @@ public interface NextHotelUserDao {
 
     Boolean insert(HotelUser hotelUser);
 
-    void findUser();
+    HotelUser findUser(UserQuery query);
 }

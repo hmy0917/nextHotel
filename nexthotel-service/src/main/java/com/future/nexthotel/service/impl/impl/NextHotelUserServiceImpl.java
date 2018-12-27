@@ -1,5 +1,6 @@
 package com.future.nexthotel.service.impl.impl;
 
+import com.future.nexthotel.model.query.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.future.nexthotel.dao.NextHotelUserDao;
@@ -21,5 +22,10 @@ public class NextHotelUserServiceImpl implements NextHotelUserService {
     @Override
     public Boolean saveUser(HotelUser user) {
         return hotelUserDao.insert(user);
+    }
+
+    @Override
+    public HotelUser findUser(UserQuery query) {
+        return hotelUserDao.findUser(query);
     }
 }
