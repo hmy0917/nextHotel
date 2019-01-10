@@ -1,12 +1,16 @@
 package com.future.nexthotel.webapp.controller;
 
-import javax.annotation.Resource;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import com.future.nexthotel.model.domain.mongo.HotelUser;
+import com.future.nexthotel.model.domain.mongo.role.HotelUser;
+import com.future.nexthotel.model.query.UserQuery;
+import com.future.nexthotel.model.vo.response.ResponseEntity;
 import com.future.nexthotel.service.impl.NextHotelUserService;
+import com.future.nexthotel.webapp.annotation.AccessControl;
 
 /**
  * @author HaoMingYao (haomingyao@gotokeep.com)
@@ -17,18 +21,31 @@ import com.future.nexthotel.service.impl.NextHotelUserService;
 @RequestMapping(value = "/nexthotel/v1/user")
 public class NextHotelUserController {
 
-    @Resource
+    @Autowired
     private NextHotelUserService nextHotelUserService;
 
-    @ResponseBody
-    @GetMapping(value = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String insert(
-            @RequestParam(value = "name") String name,
-            @RequestParam(value = "password", required = false, defaultValue = "") String password) {
-        HotelUser user = new HotelUser();
-        user.setUserName(name);
-        user.setUserPassword(password);
-        nextHotelUserService.saveUser(user);
-        return user.toString();
+    @AccessControl(allowResources = "customer")
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity insert(@RequestBody @Valid HotelUser user) {
+        return new ResponseEntity(nextHotelUserService.saveUser(user));
+    }
+
+    @AccessControl(allowResources = "customer")
+    @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getUserInfo(@RequestBody UserQuery query) {
+
+        return new ResponseEntity(nextHotelUserService.findUser(query));
+    }
+
+    @AccessControl(allowResources = "worker")
+    @PostMapping(value = "/remark", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity remark(@RequestParam String text, @RequestParam String userId) {
+        return new ResponseEntity(nextHotelUserService.remarkUser(text, userId));
+    }
+
+    @AccessControl(allowResources = "worker")
+    @PostMapping(value = "/remark", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity remark(@RequestParam String userId) {
+        return new ResponseEntity(nextHotelUserService.getRemarks(userId));
     }
 }

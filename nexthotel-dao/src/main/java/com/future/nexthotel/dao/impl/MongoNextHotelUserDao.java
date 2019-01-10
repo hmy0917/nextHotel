@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.future.nexthotel.dao.NextHotelUserDao;
-import com.future.nexthotel.model.domain.mongo.HotelUser;
+import com.future.nexthotel.model.domain.mongo.role.HotelUser;
 import com.future.nexthotel.model.query.UserQuery;
 import com.mongodb.MongoException;
 
@@ -20,7 +20,7 @@ import com.mongodb.MongoException;
  * @date 2018/12/26
  * @time 9:11 PM
  **/
-@Repository
+@Component
 public class MongoNextHotelUserDao implements NextHotelUserDao {
 
     @Autowired
@@ -32,6 +32,7 @@ public class MongoNextHotelUserDao implements NextHotelUserDao {
         if (hotelUser == null) {
             return false;
         }
+        hotelUser.setCreateAt(System.currentTimeMillis());
         try {
             mongoTemplate.save(hotelUser);
         } catch (MongoException e) {
@@ -46,11 +47,17 @@ public class MongoNextHotelUserDao implements NextHotelUserDao {
             return null;
         }
         Query query = new Query();
-        if (StringUtils.isNotBlank(userQuery.getUserId())) {
-            query.addCriteria(Criteria.where("_id").is(new ObjectId(userQuery.getUserId())));
+        if (StringUtils.isNotBlank(userQuery.getCardId())) {
+            query.addCriteria(Criteria.where("cardId").is(new ObjectId(userQuery.getCardId())));
         }
-        if (StringUtils.isNotBlank(userQuery.getUserName())) {
-            query.addCriteria(Criteria.where("username").is(userQuery.getUserName()));
+        if (StringUtils.isNotBlank(userQuery.getFirstName())) {
+            query.addCriteria(Criteria.where("firstName").is(userQuery.getFirstName()));
+        }
+        if (StringUtils.isNotBlank(userQuery.getLastName())) {
+            query.addCriteria(Criteria.where("lastName").is(userQuery.getLastName()));
+        }
+        if (StringUtils.isNotBlank(userQuery.getPhone())) {
+            query.addCriteria(Criteria.where("phone").is(userQuery.getPhone()));
         }
         return mongoTemplate.findOne(query, HotelUser.class);
     }

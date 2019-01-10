@@ -1,6 +1,9 @@
 package com.future.nexthotel.service.impl;
 
-import com.future.nexthotel.model.domain.mongo.HotelUser;
+import java.util.List;
+
+import com.future.nexthotel.model.domain.mongo.UserRemark;
+import com.future.nexthotel.model.domain.mongo.role.HotelUser;
 import com.future.nexthotel.model.query.UserQuery;
 
 /**
@@ -25,4 +28,20 @@ public interface NextHotelUserService {
      * @return
      */
     HotelUser findUser(UserQuery query);
+
+    /**
+     * 备注用户信息
+     * 
+     * @param
+     * @return
+     */
+    Boolean remarkUser(String text, String userId);
+
+    /**
+     * 查询用户备注信息
+     * 
+     * @param userId
+     * @return
+     */
+    List<UserRemark> getRemarks(String userId);
 }

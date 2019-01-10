@@ -1,6 +1,6 @@
 package com.future.nexthotel.dao;
 
-import com.future.nexthotel.model.domain.mongo.HotelUser;
+import com.future.nexthotel.model.domain.mongo.role.HotelUser;
 import com.future.nexthotel.model.query.UserQuery;
 
 /**
@@ -11,7 +11,17 @@ import com.future.nexthotel.model.query.UserQuery;
 
 public interface NextHotelUserDao {
 
+    /**
+     * 添加用户
+     * @param hotelUser
+     * @return
+     */
     Boolean insert(HotelUser hotelUser);
 
+    /**
+     * 查找用户信息
+     * @param query
+     * @return
+     */
     HotelUser findUser(UserQuery query);
 }
